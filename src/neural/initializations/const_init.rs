@@ -1,11 +1,11 @@
 use rand::Rng;
 use crate::neural::initializations::Initialization;
 
-pub struct UniformInitialization {
+pub struct ConstInitializaation {
     pub min: f64,
     pub max: f64,
 }
-impl Initialization for UniformInitialization {
+impl Initialization for ConstInitializaation {
     fn get_range_min(&self) -> f64 {
         self.min
     }
@@ -15,18 +15,18 @@ impl Initialization for UniformInitialization {
     }
 
     fn set_range_min(&mut self, min: f64) {
-        self.min = min;
+        self.min = min
     }
 
     fn set_range_max(&mut self, max: f64) {
-        self.max = max;
+        self.max = max
     }
 
     fn init_weight<R: Rng + ?Sized>(&self, rng: &mut R, input: usize, neurons: usize) -> f64 {
-        rng.random_range(self.min..self.max)
+        (self.min + self.max) / 2.0
     }
 
     fn init_bias<R: Rng + ?Sized>(&self, rng: &mut R, input: usize) -> f64 {
-        rng.random_range(self.min..self.max)
+        (self.min + self.max) / 2.0
     }
 }
