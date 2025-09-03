@@ -22,11 +22,28 @@ impl Initialization for ConstInitializaation {
         self.max = max
     }
 
-    fn init_weight<R: Rng + ?Sized>(&self, rng: &mut R, input: usize, neurons: usize) -> f64 {
+    fn init_weight<R: Rng + ?Sized>(&self, _rng: &mut R, _input: usize, _neurons: usize) -> f64 {
         (self.min + self.max) / 2.0
     }
 
-    fn init_bias<R: Rng + ?Sized>(&self, rng: &mut R, input: usize) -> f64 {
+    fn init_bias<R: Rng + ?Sized>(&self, _rng: &mut R, _input: usize) -> f64 {
         (self.min + self.max) / 2.0
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rand::prelude::*;
+
+    #[test]
+    fn const_init_returns_mid_value() {
+        let mut rng = rand::rng();
+        let c = ConstInitializaation { min: -4.0, max: 2.0 };
+        let mid = (-4.0 + 2.0) / 2.0;
+        for _ in 0..10 {
+            assert!((c.init_weight(&mut rng, 0, 0) - mid).abs() < 1e-12);
+            assert!((c.init_bias(&mut rng, 0) - mid).abs() < 1e-12);
+        }
     }
 }

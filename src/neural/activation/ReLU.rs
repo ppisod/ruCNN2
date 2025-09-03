@@ -18,3 +18,22 @@ impl Activation for ReLU{
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn relu_f_behavior() {
+        assert_eq!(ReLU::f(-2.5), 0.0);
+        assert_eq!(ReLU::f(0.0), 0.0);
+        assert!((ReLU::f(3.2) - 3.2).abs() < 1e-12);
+    }
+
+    #[test]
+    fn relu_df_behavior() {
+        assert_eq!(ReLU::df(-0.1), 0.0);
+        assert_eq!(ReLU::df(0.0), 0.0);
+        assert_eq!(ReLU::df(10.0), 1.0);
+    }
+}

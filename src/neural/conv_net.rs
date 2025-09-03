@@ -81,3 +81,31 @@ impl ConvolutionalNetwork {
         // 'blame' now is the gradient which is the network input; typically unused herdusdjnleucjn;qeofn
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::neural::activation::ReLU::ReLU;
+    use crate::neural::loss::mean_squared_error::MeanSquaredError;
+
+    #[test]
+    fn run_without_caching_returns_expected_len() {
+        let inp = InputLayer::new(3);
+        let dl1 = DenseLayer::new(3, 4);
+        let dl2 = DenseLayer::new(4, 2);
+        let net = ConvolutionalNetwork { input_layer: inp, dense_layers: vec![dl1, dl2] };
+        let out = net.run_without_caching::<ReLU>();
+        assert_eq!(out.len(), 2);
+    }
+
+    #[test]
+    fn backprop_train_smoke() {
+        let inp = InputLayer::new(2);
+        let dl1 = DenseLayer::new(2, 3);
+        let dl2 = DenseLayer::new(3, 2);
+        let mut net = ConvolutionalNetwork { input_layer: inp, dense_layers: vec![dl1, dl2] };
+        let targets = vec![0.0, 1.0];
+        // Should not panic or early-return if lengths match
+        net.backprop_train::<ReLU, MeanSquaredError>(targets, 0.01, false);
+    }
+}

@@ -25,3 +25,16 @@ impl InputLayer {
         self.values.clone()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn input_layer_forward_returns_values() {
+        let layer = InputLayer::new(4);
+        let vals = layer.forward();
+        assert_eq!(vals.len(), 4);
+        assert!(vals.iter().all(|v| *v >= -2.0 && *v < 2.0));
+    }
+}
